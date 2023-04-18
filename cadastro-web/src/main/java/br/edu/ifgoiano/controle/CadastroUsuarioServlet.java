@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.edu.ifgoiano.entidade.Usuario;
+
+@WebServlet ("/cadastroUsuario")
 
 public class CadastroUsuarioServlet extends HttpServlet{
 	
@@ -38,7 +41,7 @@ public class CadastroUsuarioServlet extends HttpServlet{
 			
 			resp.sendRedirect("index.html");
 		}else {
-			req.getRequestDispatcher("cadastroDeUsuario.html").forward(req, resp);
+			req.getRequestDispatcher("usuarioCadastro.jsp").forward(req, resp);
 		}
 		
 	}
