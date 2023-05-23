@@ -46,14 +46,18 @@ public class CadastroUsuarioServlet extends HttpServlet{
 		
 	}
 	
-	public void destroy() {
-		this.ltsDeUsuario.clear();
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//for (Usuario usuario : ltsDeUsuario) {
+			//System.out.println(usuario.getNome().concat(" - ").concat(usuario.getEmail()));
+		//}
+		
+		req.setAttribute("Usuario", ltsDeUsuario);
+		req.getRequestDispatcher("usuarioListar.jsp").forward(req, resp);
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		for (Usuario usuario : ltsDeUsuario) {
-			System.out.println(usuario.getNome().concat(" - ").concat(usuario.getEmail()));
-		}
+	public void destroy() {
+		this.ltsDeUsuario.clear();
 	}
 }
