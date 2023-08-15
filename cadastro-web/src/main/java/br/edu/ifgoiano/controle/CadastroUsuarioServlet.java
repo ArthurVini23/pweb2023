@@ -1,8 +1,6 @@
 package br.edu.ifgoiano.controle;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,53 +9,42 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.edu.ifgoiano.entidade.Usuario;
+import br.edu.ifgoiano.repositorio.UsuarioRepositorio;
 
-@WebServlet ("/cadastroUsuario")
+@WebServlet("/cadastrarUsuario")
+public class CadastroUsuarioServlet extends HttpServlet {
 
-public class CadastroUsuarioServlet extends HttpServlet{
-	
-	private List<Usuario> ltsDeUsuario;
+	private static final long serialVersionUID = 7869758393435911873L;
 	
 	@Override
-	public void init() throws ServletException {
-			this.ltsDeUsuario = new ArrayList<Usuario>();
-	}
-	
-	private static final long serialVersionUID = -3572994547498409627L;
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String senha1 = req.getParameter("senha1");
 		String senha2 = req.getParameter("senha2");
 		
-		if (senha1.equals(senha2)) {
-			Usuario usu = new Usuario();
-			usu.setNome(req.getParameter("nome"));
-			usu.setEmail(req.getParameter("email"));
-			usu.setSenha(senha1);
+		//Verificar se as senhas são iguais
+		if(senha1.equals(senha2)) {
+			Usuario usuario = new Usuario();
+			usuario.setNome(req.getParameter("nome"));
+			usuario.setEmail(req.getParameter("email"));
+			usuario.setSenha(senha1);
 			
-			ltsDeUsuario.add(usu);
+			UsuarioRepositorio repositorio = new UsuarioRepositorio();
+			repositorio.inserirUsuario(usuario);
 			
+			//redirecionar o usuário para a página de login
 			resp.sendRedirect("index.html");
 		}else {
+			//redirecionar o usuário para a mesma página de cadastro do usuário.
 			req.getRequestDispatcher("usuarioCadastro.jsp").forward(req, resp);
 		}
-		
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//for (Usuario usuario : ltsDeUsuario) {
-			//System.out.println(usuario.getNome().concat(" - ").concat(usuario.getEmail()));
-		//}
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		UsuarioRepositorio repositorio = new UsuarioRepositorio();
 		
-		req.setAttribute("Usuario", ltsDeUsuario);
-		req.getRequestDispatcher("usuarioListar.jsp").forward(req, resp);
-	}
-	
-	@Override
-	public void destroy() {
-		this.ltsDeUsuario.clear();
+		req.setAttribute("usuarios", repositorio.listarUsuario());
+		
+		req.getRequestDispatcher("usuarioListagem.jsp").forward(req, resp);
 	}
 }
