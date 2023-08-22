@@ -16,7 +16,7 @@
 <body>
 	<div class="container-fluid">
 		<h1>Alteração de Usuario</h1>
-		<form method="post" action="cadastrarUsuario">
+		<form method="post" action="alterarUsuario">
 			<input type="hidden" name="id" value="${usuario.id}">
 			<label for="nome">Nome:</label>
 			<input type="text" name="nome" value="${usuario.nome}">
